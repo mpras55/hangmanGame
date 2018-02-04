@@ -1,0 +1,57 @@
+body{
+	background-image: url(./../images/cricket_ball2.png);
+	background-size: cover;
+}
+
+h1 {
+	font-size: 100px;
+	color: #dddddd;
+	text-align: center;
+	font-family: Courier New, Courier, monospace;
+	font-weight: bold;
+	margin-top: 200px;
+}
+
+#spacedout{
+	font-size: 50px;
+	letter-spacing: 15px;
+	font-family: Courier New, Courier, monospace;
+	text-align: center;
+	font-weight: bold;
+	color: #ffffff;
+	margin-top: 50px;
+	margin-bottom: 75px;
+}
+
+.text-center{
+	text-align: center;
+	margin-top: 25px;
+}
+
+#sub-head{
+	font-size: 35px;
+	font-family: Courier New, Courier, monospace;
+	color: #ffffff;
+	margin-left: 100px;
+	font-weight: bold;
+}
+
+#sub-head2,
+#attempts-remaining,
+#total-wins,
+#total-loss
+{
+	font-size: 35px;
+	font-family: Courier New, Courier, monospace;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+#chosen-letters{
+	font-size: 35px;
+	letter-spacing: 15px;
+	font-family: Courier New, Courier, monospace;
+	color: #ffffff;
+	font-weight: bold;
+}
+
