@@ -9,11 +9,11 @@ window.onload = function what() {
 		, "VIVIAN RICHARDS"
 		, "KAPIL DEV"
 		, "STEVE WAUGH"
-		, "M S DHONI"
+		, "MAHENDRA SINGH DHONI"
 		, "VIRAT KOHLI"
 		, "WASIM AKRAM"
 		, "BRIAN LARA"
-		, "SIR DON BRADMAN"
+		, "DON BRADMAN"
 		, "JOE ROOT"
 		, "GLENN MCGRATH"
 		, "SHANE WARNE"
@@ -23,6 +23,28 @@ window.onload = function what() {
 		, "SOURAV GANGULY"
 		, "COURTNEY WALSH"
 		, "MUTTIAH MURALITHARAN"
+		, "CURTLY AMBROSE"
+		, "BISHAN SINGH BEDI"
+		, "ALLAN BORDER"
+		, "IAN BOTHAM"
+		, "GEOFFREY BOYCOTT"
+		, "GREG CHAPPELL"
+		, "RICHARD HADLEE"
+		, "GRAHAM GOOCH"
+		, "GORDON GREENIDGE"
+		, "MARTIN CROWE"
+		, "MICHAEL HOLDING"
+		, "DENNIS LILLEE"
+		, "CLIVE LLOYD"
+		, "MALCOLM MARSHALL"
+		, "GARY KIRSTEN"
+		, "GARY SOBERS"
+		, "IMRAN KHAN"
+		, "CHRIS GAYLE"
+		, "INZAMAM UL HAQ"
+		, "SHAUN POLLOCK"
+		, "RICKY PONTING"
+		, "JACQUES KALLIS"
 	];
 
 	/*---------------------------------------------------------------------------*/
@@ -53,16 +75,16 @@ window.onload = function what() {
 
 	/*---------------------------------------------------------------------------*/
 	//			Declare and Initialize variables before reading input key clicks 
-	//			Initail Page Load with first hangman puzzle
+	//			Initial Page Load with first hangman puzzle
 	/*---------------------------------------------------------------------------*/
 	var hangmanLetters = [];
 	var hangmanBlanks = [];
 	var chosenLetters = [""];
 	var randomIndex = Math.floor((Math.random() * dataBase.length));
 	var hangmanWord = dataBase[randomIndex];
-	console.log(randomIndex);
-	console.log(hangmanWord);
-	console.log(hangmanWord.length);
+	// console.log(randomIndex);
+	// console.log(hangmanWord);
+	// console.log(hangmanWord.length);
 
 	for (var i = 0; i < hangmanWord.length; i++) {
 		hangmanLetters.push(hangmanWord.charAt(i));
@@ -73,30 +95,36 @@ window.onload = function what() {
 			hangmanBlanks.push(" ");
 		}
 	}
-	console.log(hangmanLetters);
-	console.log(hangmanBlanks);
+	// console.log(hangmanLetters);
+	// console.log(hangmanBlanks);
 
 	hangmanDisp.innerHTML = concatWord(hangmanBlanks);
 
 	/*---------------------------------------------------------------------------*/
-	//		Script Re-entry Point after key click
+	//			Script Re-entry Point after key click
 	/*---------------------------------------------------------------------------*/
 
 	document.onkeyup = function (event) {
-		console.log("Prcoessing click! " + event.key + " " + event.keyCode);
-		// If game is on, don't load new hangman puzzle.
-		// If game is NOT on and space bar is pressed, load a new hangman puzzle.
+		// console.log("Prcoessing click! " + event.key + " " + event.keyCode);
+
+		/*---------------------------------------------------------------------------*/
+		//			If game is on, don't load new hangman puzzle.
+		//			If game is NOT on and space bar is pressed, load a new hangman puzzle.
+		/*---------------------------------------------------------------------------*/
+
 		if (!gameOn && event.keyCode === 32) {
-			console.log("Getting new hangman question");
+			// console.log("Getting new hangman question");
+
+			// Half second delay
 			sleep(500);
 			hangmanLetters = [];
 			hangmanBlanks = [];
 			chosenLetters = [""];
 			randomIndex = Math.floor((Math.random() * dataBase.length));
 			hangmanWord = dataBase[randomIndex];
-			console.log(randomIndex);
-			console.log(hangmanWord);
-			console.log(hangmanWord.length);
+			// console.log(randomIndex);
+			// console.log(hangmanWord);
+			// console.log(hangmanWord.length);
 
 			for (var i = 0; i < hangmanWord.length; i++) {
 				hangmanLetters.push(hangmanWord.charAt(i));
@@ -107,8 +135,13 @@ window.onload = function what() {
 					hangmanBlanks.push(" ");
 				}
 			}
-			console.log(hangmanLetters);
-			console.log(hangmanBlanks);
+			// console.log(hangmanLetters);
+			// console.log(hangmanBlanks);
+
+			/*---------------------------------------------------------------------------*/
+			//					Initialize Variables and innerHTML elements for frest start
+			//					of next Hangman Puzzle
+			/*---------------------------------------------------------------------------*/
 
 			attemptsRemaining = 7;
 			gameOn = true;
@@ -120,11 +153,14 @@ window.onload = function what() {
 			spaceBarDisp.innerHTML = "";
 		}
 
-		// Process key entered, while Win or Loss has not been decided
+		/*---------------------------------------------------------------------------*/
+		//			Process key clicked, if Win or Loss has not been decided
+		/*---------------------------------------------------------------------------*/
+
 		if (!ifWin && !ifLoss) {
 			keyClicked = (event.key).toUpperCase();
 			keyCode = event.keyCode;
-			console.log("Key clicked: " + keyClicked);
+			// console.log("Key clicked: " + keyClicked);
 			if (keyCode >= 65 && keyCode <= 90) {
 				for (var i = 0; i < chosenLetters.length; i++) {
 					if (keyClicked === chosenLetters[i]) {
@@ -160,13 +196,26 @@ window.onload = function what() {
 					lossAudio.play();
 				}
 				hangmanDisp.innerHTML = concatWord(hangmanBlanks);
-				if (ifLoss) { hangmanDisp.innerHTML = concatWord(hangmanLetters); }
+				
+				/*---------------------------------------------------------------------------*/
+				//			Display answer if attempt fails
+				/*---------------------------------------------------------------------------*/
+				if (ifLoss) { 
+					hangmanDisp.innerHTML = concatWord(hangmanLetters); 
+				}
+
 				chosenLettersDisp.innerHTML = concatWord(chosenLetters);
 				attemptsRemainingDisp.innerHTML = attemptsRemaining;
 				totalWinsDisp.innerHTML = totalWins;
 				totalLossDisp.innerHTML = totalLoss;
+
+				/*---------------------------------------------------------------------------*/
+				//				After a Win or Loss, reset gameOn switch to trigger loading a
+				//				fresh puzzle
+				/*---------------------------------------------------------------------------*/
+
 				if (ifWin || ifLoss) {
-					console.log("Win or loss confirmed!");
+					// console.log("Win or loss confirmed!");
 					gameOn = false;
 					spaceBarDisp.innerHTML = "Press Space Bar to continue playing";
 				}
@@ -175,7 +224,9 @@ window.onload = function what() {
 	}
 };
 
-// Functions
+/*---------------------------------------------------------------------------*/
+//								Functions
+/*---------------------------------------------------------------------------*/
 
 function concatWord(myCharArray) {
 	var myWord = "";
