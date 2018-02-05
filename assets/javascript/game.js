@@ -1,5 +1,7 @@
 window.onload = function what() {
-	// Hangman Repository 
+	/*---------------------------------------------------------------------------*/
+	//								Hangman Repository 
+	/*---------------------------------------------------------------------------*/
 	var dataBase = ["SUNIL GAVASKAR"
 		, "SACHIN TENDULKAR"
 		, "RAHUL DRAVID"
@@ -23,25 +25,39 @@ window.onload = function what() {
 		, "MUTTIAH MURALITHARAN"
 	];
 
-	//Global variables
+	/*---------------------------------------------------------------------------*/
+	//								Global variables
+	/*---------------------------------------------------------------------------*/
 	var totalWins = 0;
 	var totalLoss = 0;
 	var attemptsRemaining = 7;
 	var gameOn = true;
 	var ifWin = false;
 	var ifLoss = false;
+	var atLeastOneMatch = false;
+	var alreadyChosen = false;
+	var keyClicked = "";
+	var keyCode = 0;
+	var winAudio = new Audio('assets/audio/BallHitCheer.mp3');
+	var lossAudio = new Audio('assets/audio/Aah.mp3');
 
-	//Grab all required document elements by id
+	/*---------------------------------------------------------------------------*/
+	//			Grab all required document elements by id
+	/*---------------------------------------------------------------------------*/
 	var hangmanDisp = document.getElementById("spacedout");
 	var chosenLettersDisp = document.getElementById("chosen-letters");
 	var attemptsRemainingDisp = document.getElementById("attempts-remaining");
 	var totalWinsDisp = document.getElementById("total-wins");
 	var totalLossDisp = document.getElementById("total-loss");
+	var spaceBarDisp = document.getElementById("space-bar-text");
 
-	//Declare and Initialize variables before reading input key clicks 
+	/*---------------------------------------------------------------------------*/
+	//			Declare and Initialize variables before reading input key clicks 
+	//			Initail Page Load with first hangman puzzle
+	/*---------------------------------------------------------------------------*/
 	var hangmanLetters = [];
 	var hangmanBlanks = [];
-	var chosenLetters = [];
+	var chosenLetters = [""];
 	var randomIndex = Math.floor((Math.random() * dataBase.length));
 	var hangmanWord = dataBase[randomIndex];
 	console.log(randomIndex);
@@ -60,59 +76,103 @@ window.onload = function what() {
 	console.log(hangmanLetters);
 	console.log(hangmanBlanks);
 
-	// var displayWord = concatWord(hangmanLetters);
-	// console.log(displayWord);
-
-	// displayWord = concatWord(hangmanBlanks);
-	// console.log(displayWord);
-
 	hangmanDisp.innerHTML = concatWord(hangmanBlanks);
 
-	// Process key entered, while Win or Loss has not been decided
-	// console.log("Inside win-loss while loop!");
-	var keyClicked = "";
-	var keyCode = 0;
-	var atLeastOneMatch = false;
-	var alreadyChosen = false;
+	/*---------------------------------------------------------------------------*/
+	//		Script Re-entry Point after key click
+	/*---------------------------------------------------------------------------*/
+
 	document.onkeyup = function (event) {
 		console.log("Prcoessing click! " + event.key + " " + event.keyCode);
+		// If game is on, don't load new hangman puzzle.
+		// If game is NOT on and space bar is pressed, load a new hangman puzzle.
+		if (!gameOn && event.keyCode === 32) {
+			console.log("Getting new hangman question");
+			sleep(500);
+			hangmanLetters = [];
+			hangmanBlanks = [];
+			chosenLetters = [""];
+			randomIndex = Math.floor((Math.random() * dataBase.length));
+			hangmanWord = dataBase[randomIndex];
+			console.log(randomIndex);
+			console.log(hangmanWord);
+			console.log(hangmanWord.length);
+
+			for (var i = 0; i < hangmanWord.length; i++) {
+				hangmanLetters.push(hangmanWord.charAt(i));
+				if (hangmanWord.charAt(i) >= "A" && hangmanWord.charAt(i) <= "Z") {
+					hangmanBlanks.push("_");
+				}
+				else if (hangmanWord.charAt(i) === " ") {
+					hangmanBlanks.push(" ");
+				}
+			}
+			console.log(hangmanLetters);
+			console.log(hangmanBlanks);
+
+			attemptsRemaining = 7;
+			gameOn = true;
+			ifWin = false;
+			ifLoss = false;
+			hangmanDisp.innerHTML = concatWord(hangmanBlanks);
+			chosenLettersDisp.innerHTML = concatWord(chosenLetters);
+			attemptsRemainingDisp.innerHTML = attemptsRemaining;
+			spaceBarDisp.innerHTML = "";
+		}
+
+		// Process key entered, while Win or Loss has not been decided
 		if (!ifWin && !ifLoss) {
 			keyClicked = (event.key).toUpperCase();
 			keyCode = event.keyCode;
 			console.log("Key clicked: " + keyClicked);
 			if (keyCode >= 65 && keyCode <= 90) {
-				chosenLetters.push(keyClicked);
-				for (var i = 0; i < hangmanLetters.length; i++) {
-					if (keyClicked === hangmanLetters[i]) {
-						hangmanBlanks[i] = hangmanLetters[i];
-						atLeastOneMatch = true;
+				for (var i = 0; i < chosenLetters.length; i++) {
+					if (keyClicked === chosenLetters[i]) {
+						alreadyChosen = true;
 					}
 				}
-				if (atLeastOneMatch) {
-					atLeastOneMatch = false;
+				if (alreadyChosen) {
+					alreadyChosen = false;
 				}
 				else {
-					attemptsRemaining--;
+					chosenLetters.push(keyClicked);
+					for (var i = 0; i < hangmanLetters.length; i++) {
+						if (keyClicked === hangmanLetters[i]) {
+							hangmanBlanks[i] = hangmanLetters[i];
+							atLeastOneMatch = true;
+						}
+					}
+					if (atLeastOneMatch) {
+						atLeastOneMatch = false;
+					}
+					else {
+						attemptsRemaining--;
+					}
+				}
+				if (concatWord(hangmanBlanks) === concatWord(hangmanLetters)) {
+					ifWin = true;
+					totalWins++;
+					winAudio.play();
+				}
+				if (attemptsRemaining === 0) {
+					ifLoss = true;
+					totalLoss++;
+					lossAudio.play();
+				}
+				hangmanDisp.innerHTML = concatWord(hangmanBlanks);
+				if (ifLoss) { hangmanDisp.innerHTML = concatWord(hangmanLetters); }
+				chosenLettersDisp.innerHTML = concatWord(chosenLetters);
+				attemptsRemainingDisp.innerHTML = attemptsRemaining;
+				totalWinsDisp.innerHTML = totalWins;
+				totalLossDisp.innerHTML = totalLoss;
+				if (ifWin || ifLoss) {
+					console.log("Win or loss confirmed!");
+					gameOn = false;
+					spaceBarDisp.innerHTML = "Press Space Bar to continue playing";
 				}
 			}
-			if (concatWord(hangmanBlanks) === concatWord(hangmanLetters)) {
-				ifWin = true;
-				totalWins++;
-				alert("You Won!");
-			}
-			if (attemptsRemaining === 0) {
-				ifLoss = true;
-				totalLoss++;
-				alert("Sorry. Better luck next time!");
-			}
-			hangmanDisp.innerHTML = concatWord(hangmanBlanks);
-			chosenLettersDisp.innerHTML = concatWord(chosenLetters);
-			attemptsRemainingDisp.innerHTML = attemptsRemaining;
-			totalWinsDisp.innerHTML = totalWins;
-			totalLossDisp.innerHTML = totalLoss;
 		}
 	}
-
 };
 
 // Functions
@@ -123,4 +183,13 @@ function concatWord(myCharArray) {
 		myWord = myWord + myCharArray[i];
 	}
 	return myWord;
+}
+
+function sleep(milliseconds) {
+	var start = new Date().getTime();
+	for (var i = 0; i < 1e7; i++) {
+		if ((new Date().getTime() - start) > milliseconds) {
+			break;
+		}
+	}
 }
