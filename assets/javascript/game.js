@@ -1,6 +1,6 @@
 window.onload = function what() {
 	/*---------------------------------------------------------------------------*/
-	//								Hangman Repository 
+	//		Hangman Repository 
 	/*---------------------------------------------------------------------------*/
 	var dataBase = ["SUNIL GAVASKAR"
 		, "SACHIN TENDULKAR"
@@ -48,7 +48,7 @@ window.onload = function what() {
 	];
 
 	/*---------------------------------------------------------------------------*/
-	//								Global variables
+	//		Global variables
 	/*---------------------------------------------------------------------------*/
 	var totalWins = 0;
 	var totalLoss = 0;
@@ -64,7 +64,7 @@ window.onload = function what() {
 	var lossAudio = new Audio('assets/audio/Aah.mp3');
 
 	/*---------------------------------------------------------------------------*/
-	//			Grab all required document elements by id
+	//		Grab all required document elements by id
 	/*---------------------------------------------------------------------------*/
 	var hangmanDisp = document.getElementById("spacedout");
 	var chosenLettersDisp = document.getElementById("chosen-letters");
@@ -74,8 +74,8 @@ window.onload = function what() {
 	var spaceBarDisp = document.getElementById("space-bar-text");
 
 	/*---------------------------------------------------------------------------*/
-	//			Declare and Initialize variables before reading input key clicks 
-	//			Initial Page Load with first hangman puzzle
+	//		Declare and Initialize variables before reading input key clicks 
+	//		Initial Page Load with first hangman puzzle
 	/*---------------------------------------------------------------------------*/
 	var hangmanLetters = [];
 	var hangmanBlanks = [];
@@ -101,15 +101,15 @@ window.onload = function what() {
 	hangmanDisp.innerHTML = concatWord(hangmanBlanks);
 
 	/*---------------------------------------------------------------------------*/
-	//			Script Re-entry Point after key click
+	//		Script Re-entry Point after key click
 	/*---------------------------------------------------------------------------*/
 
 	document.onkeyup = function (event) {
 		// console.log("Prcoessing click! " + event.key + " " + event.keyCode);
 
 		/*---------------------------------------------------------------------------*/
-		//			If game is on, don't load new hangman puzzle.
-		//			If game is NOT on and space bar is pressed, load a new hangman puzzle.
+		//	If game is on, don't load new hangman puzzle.
+		//	If game is NOT on and space bar is pressed, load a new hangman puzzle.
 		/*---------------------------------------------------------------------------*/
 
 		if (!gameOn && event.keyCode === 32) {
@@ -139,8 +139,8 @@ window.onload = function what() {
 			// console.log(hangmanBlanks);
 
 			/*---------------------------------------------------------------------------*/
-			//					Initialize Variables and innerHTML elements for frest start
-			//					of next Hangman Puzzle
+			//	Initialize Variables and innerHTML elements for frest start
+			//	of next Hangman Puzzle
 			/*---------------------------------------------------------------------------*/
 
 			attemptsRemaining = 7;
@@ -154,7 +154,7 @@ window.onload = function what() {
 		}
 
 		/*---------------------------------------------------------------------------*/
-		//			Process key clicked, if Win or Loss has not been decided
+		//	Process key clicked, if Win or Loss has not been decided
 		/*---------------------------------------------------------------------------*/
 
 		if (!ifWin && !ifLoss) {
@@ -198,7 +198,7 @@ window.onload = function what() {
 				hangmanDisp.innerHTML = concatWord(hangmanBlanks);
 				
 				/*---------------------------------------------------------------------------*/
-				//			Display answer if attempt fails
+				// Display answer if attempt fails
 				/*---------------------------------------------------------------------------*/
 				if (ifLoss) { 
 					hangmanDisp.innerHTML = concatWord(hangmanLetters); 
@@ -210,8 +210,8 @@ window.onload = function what() {
 				totalLossDisp.innerHTML = totalLoss;
 
 				/*---------------------------------------------------------------------------*/
-				//				After a Win or Loss, reset gameOn switch to trigger loading a
-				//				fresh puzzle
+				//	After a Win or Loss, reset gameOn switch to trigger loading a
+				//	fresh puzzle
 				/*---------------------------------------------------------------------------*/
 
 				if (ifWin || ifLoss) {
@@ -225,7 +225,7 @@ window.onload = function what() {
 };
 
 /*---------------------------------------------------------------------------*/
-//								Functions
+//		Functions
 /*---------------------------------------------------------------------------*/
 
 function concatWord(myCharArray) {
